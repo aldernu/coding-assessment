@@ -1,6 +1,8 @@
 "use client";
+import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
+import Select from "react-select";
 
 export default function Form() {
   const [formData, setFormData] = useState({
@@ -11,6 +13,16 @@ export default function Form() {
     message: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const option = [
+    { value: "Assisted Living", label: "Assisted Living" },
+    { value: "Home Care", label: "Home Care" },
+    { value: "Home Health", label: "Home Health" },
+    { value: "Independent Living/Retirement Community", label: "Java" },
+  ];
+
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({
@@ -19,9 +31,20 @@ export default function Form() {
     });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setIsSubmitting(true);
+
+    try {
+      const response = await axios.post("https://webhook.site/740fdce8-1615-4fd1-bfb8-73135667a950", formData);
+      console.log("Form data submitted:", response.data);
+      setSubmitSuccess(true);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setSubmitSuccess(false);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -31,25 +54,29 @@ export default function Form() {
       </div>
       <div className="flex-1/2 w-full justify-center items-center flex flex-col">
         <div>
-          <Image className=" object-cover" src="/ci-logo.webp" alt="Careindeed Logo" width={200} height={200} priority />
+          <Image className=" object-cover" src="/ci-logo.webp" alt="Careindeed Logo" width={170} height={170} priority />
         </div>
+        <div className="my-6 font-medium text-xl">Inquiry Form</div>
         <div className="w-[500px] mt-2">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="name">Name:</label>
+              <label htmlFor="name">Name</label>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name" value={formData.name} onChange={handleChange} required />
             </div>
             <div>
-              <label htmlFor="email">Email:</label>
+              <label htmlFor="email">Email</label>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="email" name="email" value={formData.email} onChange={handleChange} required />
             </div>
             <div>
-              <label htmlFor="zipCode">ZipCode:</label>
+              <label htmlFor="zipCode">ZipCode</label>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} required />
             </div>
             <div className="inline-block relative items-center">
               <label htmlFor="type">Medical Staffing</label>
-              <select className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" id="type" name="type" value={formData.type} onChange={handleChange}>
+              <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="type" name="type" value={formData.type} onChange={handleChange}>
+                <option value="" disabled>
+                  Select an option
+                </option>
                 <option value="Assisted Living">Assisted Living</option>
                 <option value="Home Care">Home Care</option>
                 <option value="Home Health">Home Health</option>
@@ -62,10 +89,10 @@ export default function Form() {
               </div>
             </div>
             <div>
-              <label htmlFor="message">Message:</label>
+              <label htmlFor="message">Message</label>
               <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="message" name="message" value={formData.message} onChange={handleChange} required />
             </div>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+            <button className="bg-[#FFBF0F] hover:bg-[#FFF6DD] hover:border-2  hover:border-[#946D00] text-[black] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
               Submit
             </button>
           </form>
