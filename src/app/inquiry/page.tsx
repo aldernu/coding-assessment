@@ -34,16 +34,16 @@ export default function Form() {
   };
 
   return (
-    <main className="bg-white min-h-screen flex flex-row w-full">
-      <div className="flex-1/2 w-full">
+    <main className="bg-white min-h-screen flex w-full">
+      <div className="flex-1/2 w-full hidden lg:flex">
         <Image className="w-full h-full object-cover" src="/inquiry.png" alt="Inquiry Image" width={1000} height={1000} priority />
       </div>
-      <div className="flex-1/2 w-full justify-center items-center flex flex-col">
+      <div className="md:flex-1/2 w-full justify-center items-center flex flex-col">
         <div>
           <Image className=" object-cover" src="/ci-logo.webp" alt="Careindeed Logo" width={170} height={170} priority />
         </div>
         <div className="my-6 font-medium text-xl">Inquiry Form</div>
-        <div className="w-[500px] mt-2">
+        <div className="w-full sm:max-w-lg md:max-w-xl mt-2 p-8">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="name">Name</label>
