@@ -13,37 +13,23 @@ export default function Form() {
     message: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-
-  const option = [
-    { value: "Assisted Living", label: "Assisted Living" },
-    { value: "Home Care", label: "Home Care" },
-    { value: "Home Health", label: "Home Health" },
-    { value: "Independent Living/Retirement Community", label: "Java" },
-  ];
-
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
+      message: `Hey ${formData.name}! We Have ${value} for you in Menlo Park branch. You can Contact us at (844) 824-6480 or visit our office in 890 Santa Cruz Ave, Suite B Menlo Park, CA 94025`,
     });
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
     try {
       const response = await axios.post("https://webhook.site/740fdce8-1615-4fd1-bfb8-73135667a950", formData);
       console.log("Form data submitted:", response.data);
-      setSubmitSuccess(true);
     } catch (error) {
       console.error("Error submitting form:", error);
-      setSubmitSuccess(false);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -87,10 +73,6 @@ export default function Form() {
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                 </svg>
               </div>
-            </div>
-            <div>
-              <label htmlFor="message">Message</label>
-              <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="message" name="message" value={formData.message} onChange={handleChange} required />
             </div>
             <button className="bg-[#FFBF0F] hover:bg-[#FFF6DD] hover:border-2  hover:border-[#946D00] text-[black] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
               Submit
